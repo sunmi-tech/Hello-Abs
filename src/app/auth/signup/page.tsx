@@ -80,27 +80,51 @@ export default function SignupPage() {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({
-      email: email!,
-      password: password!,
-      options: {
-        data: {
-          nickname,
-          currentWeight,
-          targetWeight,
-          startDate,
-        },
-      },
-    });
+    try {
+      // 회원가입 시도
+      const { data, error } = await supabase.auth.signUp({
+        email: email!,
+        password: password!,
+      });
 
-    if (error) {
-      alert("회원가입 실패");
-      console.error(error);
-      return;
+      if (error) {
+        alert("회원가입 실패");
+        console.error(error);
+        return;
+      }
+
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      const { data: userData } = await supabase.auth.getUser();
+      
+      const userId = userData.user?.id;
+      
+      if (!userId) {
+        alert("로그인 상태가 아닙니다.");
+        return;
+      }
+      
+      console.log("확실한 userId:", userId);
+      
+      // insert
+      await supabase.from("users").insert({
+        id: userId,
+        email,
+        nickname,
+        current_weight: currentWeight,
+        target_weight: targetWeight,
+        start_date: startDate,
+      });
+
+      alert("회원가입 성공!");
+      router.push("/");
+    } catch (error) {
+      console.error("회원가입 중 오류 발생:", error);
+      alert("회원가입 처리 중 오류가 발생했습니다.");
     }
-
-    alert("회원가입 성공!");
-    router.push("/");
   };
 
   return (

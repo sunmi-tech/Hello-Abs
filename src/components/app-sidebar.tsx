@@ -29,19 +29,19 @@ const data = {
       items: [
         {
           title: "식단 기록",
-          url: "#",
+          url: "/dashboard/meals",
         },
         {
           title: "운동 기록",
-          url: "#",
+          url: "/dashboard/exercises",
         },
         {
           title: "체중 기록",
-          url: "#",
+          url: "/dashboard/weights",
         },
         {
           title: "목표 기록",
-          url: "#",
+          url: "/dashboard/goals",
         },
       ],
     },
@@ -49,12 +49,12 @@ const data = {
   projects: [
     {
       name: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: PieChart,
     },
     {
       name: "History",
-      url: "#",
+      url: "/history",
       icon: BookOpen,
     },
   ],
